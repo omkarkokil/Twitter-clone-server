@@ -23,11 +23,9 @@ interface GoogleTokenResult {
 const queries = {
   verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
     const googleAuthToken = token;
-    console.log(token);
 
     const googleOAuthURL = new URL("https://oauth2.googleapis.com/tokeninfo");
     googleOAuthURL.searchParams.set("id_token", googleAuthToken);
-
 
     const { data } = await axios.get<GoogleTokenResult>(
       googleOAuthURL.toString(),
@@ -41,12 +39,12 @@ const queries = {
     });
 
     if (!checkExisitingUser) {
-      await prismaclient.user.create({
+      return await prismaclient.user.create({
         data: {
           email: data?.email ?? "",
           firstName: data?.given_name ?? "",
-          LastName: data.family_name,
-          profileImageURL: data.picture,
+          lastName: data?.family_name,
+          profileImageURL: data?.picture,
         },
       });
     }
@@ -56,6 +54,7 @@ const queries = {
     });
 
     if (!IfExists) throw new Error("User not found");
+
     const userToken = JwtService.generateTokenForUser(IfExists);
 
     return userToken;
@@ -63,11 +62,9 @@ const queries = {
 
   getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
     const id = ctx.user?.id;
-
     if (!id) return null;
 
     const user = await prismaclient.user.findUnique({ where: { id } });
-
     return user;
   },
 };

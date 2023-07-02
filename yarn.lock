@@ -197,10 +197,10 @@
   "resolved" "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-4.16.0-66.b20ead4d3ab9e78ac112966e242ded703f4a052c.tgz"
   "version" "4.16.0-66.b20ead4d3ab9e78ac112966e242ded703f4a052c"
 
-"@prisma/engines@4.16.1":
-  "integrity" "sha512-gpZG0kGGxfemgvK/LghHdBIz+crHkZjzszja94xp4oytpsXrgt/Ice82MvPsWMleVIniKuARrowtsIsim0PFJQ=="
-  "resolved" "https://registry.npmjs.org/@prisma/engines/-/engines-4.16.1.tgz"
-  "version" "4.16.1"
+"@prisma/engines@4.16.2":
+  "integrity" "sha512-vx1nxVvN4QeT/cepQce68deh/Turxy5Mr+4L4zClFuK1GlxN3+ivxfuv+ej/gvidWn1cE1uAhW7ALLNlYbRUAw=="
+  "resolved" "https://registry.npmjs.org/@prisma/engines/-/engines-4.16.2.tgz"
+  "version" "4.16.2"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   "integrity" "sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ=="
@@ -900,12 +900,12 @@
   dependencies:
     "through" "~2.3"
 
-"prisma@*", "prisma@^4.16.1":
-  "integrity" "sha512-C2Xm7yxHxjFjjscBEW4tmoraPHH/Vyu/A0XABdbaFtoiOZARsxvOM7rwc2iZ0qVxbh0bGBGBWZUSXO/52/nHBQ=="
-  "resolved" "https://registry.npmjs.org/prisma/-/prisma-4.16.1.tgz"
-  "version" "4.16.1"
+"prisma@*", "prisma@^4.16.2":
+  "integrity" "sha512-SYCsBvDf0/7XSJyf2cHTLjLeTLVXYfqp7pG5eEVafFLeT0u/hLFz/9W196nDRGUOo1JfPatAEb+uEnTQImQC1g=="
+  "resolved" "https://registry.npmjs.org/prisma/-/prisma-4.16.2.tgz"
+  "version" "4.16.2"
   dependencies:
-    "@prisma/engines" "4.16.1"
+    "@prisma/engines" "4.16.2"
 
 "proxy-addr@~2.0.7":
   "integrity" "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg=="
