@@ -14,7 +14,7 @@ function init() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield (0, index_1.initServer)();
         app.listen(8000, () => {
-            console.log(`server running on 8000 `);
+            console.log(`server running on 8000`);
         });
     });
 }
