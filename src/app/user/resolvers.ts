@@ -28,7 +28,6 @@ const queries = {
     const googleOAuthURL = new URL("https://oauth2.googleapis.com/tokeninfo");
     googleOAuthURL.searchParams.set("id_token", googleAuthToken);
 
-    // console.log(googleOAuthURL, "g");
 
     const { data } = await axios.get<GoogleTokenResult>(
       googleOAuthURL.toString(),
@@ -58,7 +57,6 @@ const queries = {
 
     if (!IfExists) throw new Error("User not found");
     const userToken = JwtService.generateTokenForUser(IfExists);
-    console.log(userToken);
 
     return userToken;
   },

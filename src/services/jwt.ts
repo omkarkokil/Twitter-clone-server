@@ -6,16 +6,17 @@ const JWT_SECERT = "dadasdadncoajcadfsfsdfsdfsfds";
 
 class JwtService {
   public static generateTokenForUser(user: User) {
-    const payload: JWTUser = {
-      id: user?.id,
-      email: user?.email,
-    };
+    const payload: JWTUser = { id: user?.id, email: user?.email };
     const token = Jwt.sign(payload, JWT_SECERT);
     return token;
   }
 
   public static decodeToken(token: string) {
-    return Jwt.verify(token, JWT_SECERT) as JWTUser;
+    try {
+      return Jwt.verify(token, JWT_SECERT) as JWTUser;
+    } catch (error) {
+      return null;
+    }
   }
 }
 
