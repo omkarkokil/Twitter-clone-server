@@ -2,6 +2,7 @@ import axios from "axios";
 import { prismaclient } from "../../client/db";
 import JwtService from "../../services/jwt";
 import { GraphqlContext } from "../../interface";
+import { User } from "@prisma/client";
 
 interface GoogleTokenResult {
   iss?: string;
@@ -22,51 +23,66 @@ interface GoogleTokenResult {
 
 const queries = {
   verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
-    const googleAuthToken = token;
+    try {
+      const googleAuthToken = token;
 
-    const googleOAuthURL = new URL("https://oauth2.googleapis.com/tokeninfo");
-    googleOAuthURL.searchParams.set("id_token", googleAuthToken);
+      const googleOAuthURL = new URL("https://oauth2.googleapis.com/tokeninfo");
+      googleOAuthURL.searchParams.set("id_token", googleAuthToken);
 
-    const { data } = await axios.get<GoogleTokenResult>(
-      googleOAuthURL.toString(),
-      {
-        responseType: "json",
-      }
-    );
+      const { data } = await axios.get<GoogleTokenResult>(
+        googleOAuthURL.toString(),
+        {
+          responseType: "json",
+        }
+      );
 
-    const checkExisitingUser = await prismaclient.user.findUnique({
-      where: { email: data.email },
-    });
-
-    if (!checkExisitingUser) {
-      return await prismaclient.user.create({
-        data: {
-          email: data?.email ?? "",
-          firstName: data?.given_name ?? "",
-          lastName: data?.family_name,
-          profileImageURL: data?.picture,
-        },
+      const checkExisitingUser = await prismaclient.user.findUnique({
+        where: { email: data.email },
       });
+
+      if (!checkExisitingUser) {
+        await prismaclient.user.create({
+          data: {
+            email: data?.email ?? "",
+            firstName: data?.given_name ?? "",
+            lastName: data?.family_name,
+            profileImageURL: data?.picture ?? "",
+          },
+        });
+      }
+
+      const IfExists = await prismaclient.user.findUnique({
+        where: { email: data.email },
+      });
+
+      if (!IfExists) throw new Error("User not found");
+
+      const userToken = JwtService.generateTokenForUser(IfExists);
+
+      return userToken;
+    } catch (error) {
+      console.log(error);
     }
-
-    const IfExists = await prismaclient.user.findUnique({
-      where: { email: data.email },
-    });
-
-    if (!IfExists) throw new Error("User not found");
-
-    const userToken = JwtService.generateTokenForUser(IfExists);
-
-    return userToken;
   },
 
   getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
-    const id = ctx.user?.id;
-    if (!id) return null;
+    try {
+      const id = ctx.user?.id;
+      if (!id) return null;
 
-    const user = await prismaclient.user.findUnique({ where: { id } });
-    return user;
+      const user = await prismaclient.user.findUnique({ where: { id } });
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
-export const resolvers = { queries };
+const extraResolvers = {
+  User: {
+    tweet: (parent: User) =>
+      prismaclient.tweet.findMany({ where: { authorid: parent.id } }),
+  },
+};
+
+export const resolvers = { queries, extraResolvers };
