@@ -7,7 +7,7 @@ export interface CreateTweetData {
   userId?: string;
 }
 
-class TweetService {
+class TweetService {  
   public static async createTweet(data: CreateTweetData) {
     const rateLimitFlag = await redisClient.get(`RATE_LIMIT_${data.userId}`);
     if (rateLimitFlag) throw new Error("Please wait...");
